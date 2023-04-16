@@ -12,7 +12,15 @@
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" >
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+            $('#tablephim').DataTable();
+        });
+    </script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -85,13 +93,51 @@
             @yield('content')
         </main>
     </div>
-    <script type="text/javascrips" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
-    <script type="text/javascript">
- 
-    function ChangeToSlug()
-        {
 
+    <script type="text/javascrips" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
+    <script type="text/javascript" >
+        $('.select-year').change(function(){
+            var year = $(this).find(':selected').val();
+            var id_phim = $(this).attr('id');
+            //alert(year);
+           // alert(id_phim);
+            $.ajax({
+                url: "{{ url('/update-year-phim') }}",
+                method: "GET",
+                data: {
+                    year: year,
+                    id_phim: id_phim
+                },
+                success: function() {
+                    alert('Thay đổi phim năm ' + year + ' thành công');
+                }
+            });
+        })
+    </script>
+    <script type="text/javascript" >
+        $('.select-topview').change(function(){
+            var topview = $(this).find(':selected').val();
+            var id_phim = $(this).attr('id');
+            //alert(year);
+           // alert(id_phim);
+           
+            $.ajax({
+                url: "{{ url('/update-topview-phim') }}",
+                method: "GET",
+                data: {
+                    topview: topview,
+                    id_phim: id_phim
+                },
+                success: function() {
+                    alert('Thay đổi thành công');
+                }
+            });
+        })
+    </script>
+    
+    <script type="text/javascript">
+        function ChangeToSlug(){
             var slug;
          
             //Lấy text từ thẻ input title 
@@ -121,7 +167,6 @@
                 //In slug ra textbox có id “slug”
             document.getElementById('convert_slug').value = slug;
         }
-
     </script>
 </body>
 </html>

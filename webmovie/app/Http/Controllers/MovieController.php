@@ -7,6 +7,7 @@ use App\Models\Movie;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Genre;
+use Carbon\Carbon;
 class MovieController extends Controller
 {
     /**
@@ -16,8 +17,22 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //
+        $list = Movie::with('category', 'country', 'genre')->orderBy('id', 'DESC')->get();
+        return view('admincp.movie.index', compact('list'));
     }
+    public function update_year(Request $request){
+        $data = $request->all();
+        $movie = Movie::find($data['id_phim']);
+        $movie->year = $data['year'];
+        $movie->save();
+    }
+    public function update_topview(Request $request){
+        $data = $request->all();
+        $movie = Movie::find($data['id_phim']);
+        $movie->topview = $data['topview'];
+        $movie->save();
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,12 +59,21 @@ class MovieController extends Controller
         $data = $request->all();
         $movie = new Movie();
         $movie->title = $data['title'];
+        $movie->name_english = $data['name_english'];
         $movie->descripsion = $data['descripsion'];
+        $movie->tags = $data['tags'];
+        $movie->time = $data['time'];
         $movie->status = $data['status'];
+        $movie->resolution = $data['resolution'];
+        $movie->subtitle = $data['subtitle'];
+        $movie->movie_hot = $data['movie_hot'];
         $movie->slug = $data['slug'];
+        $movie->year = $data['year'];
         $movie->category_id = $data['category_id'];
         $movie->country_id = $data['country_id'];
         $movie->genre_id = $data['genre_id'];
+        $movie->ngaycapnhat = Carbon::now('Asia/Ho_Chi_Minh');
+        $movie->ngaytao = Carbon::now('Asia/Ho_Chi_Minh');
         
         $get_image = $request->file('image');
         $path = 'uploads/movie/';
@@ -89,8 +113,7 @@ class MovieController extends Controller
         $country = Country::pluck('title','id');
         $genre = Genre::pluck('title','id');
         $movie = Movie::find($id);
-        $list = Movie::with('category', 'country', 'genre')->orderBy('id', 'DESC')->get();
-        return view('admincp.movie.form', compact('list', 'category', 'country', 'genre', 'movie'));
+        return view('admincp.movie.form', compact('category', 'country', 'genre', 'movie'));
     }
 
     /**
@@ -105,25 +128,34 @@ class MovieController extends Controller
         $data = $request->all();
         $movie = Movie::find($id);
         $movie->title = $data['title'];
+        $movie->name_english = $data['name_english'];
         $movie->descripsion = $data['descripsion'];
         $movie->status = $data['status'];
+        $movie->subtitle = $data['subtitle'];
+        $movie->resolution = $data['resolution'];
+        $movie->year = $data['year'];
+        $movie->movie_hot = $data['movie_hot'];
         $movie->slug = $data['slug'];
-        $movie->category_id = $data['category_id'];
+        $movie->time = $data['time'];
+        $movie->tags = $data['tags'];
+        $movie->category_id = $data['category_id']; 
         $movie->country_id = $data['country_id'];
         $movie->genre_id = $data['genre_id'];
-        
+        $movie->ngaycapnhat = Carbon::now('Asia/Ho_Chi_Minh');
+
         $get_image = $request->file('image');
         $path = 'uploads/movie/';
 
         if($get_image){
-            if(!empty($movie->image)){
+            if(file_exists('uploads/movie/'.$movie->image)){
                 unlink('uploads/movie/'.$movie->image);
+            }else{
+                $get_name_image = $get_image->getClientOriginalName();
+                $name_image = current(explode('.', $get_name_image));
+                $new_image = $name_image.rand(0,9999).'.'.$get_image->getClientOriginalExtension();
+                $get_image->move($path, $new_image);
+                $movie->image = $new_image;
             }
-            $get_name_image = $get_image->getClientOriginalName();
-            $name_image = current(explode('.', $get_name_image));
-            $new_image = $name_image.rand(0,9999).'.'.$get_image->getClientOriginalExtension();
-            $get_image->move($path, $new_image);
-            $movie->image = $new_image;
         }
         $movie->save();
         return redirect()->back();
@@ -138,7 +170,7 @@ class MovieController extends Controller
     public function destroy($id)
     {
         $movie = Movie::find($id);
-        if(!empty($movie->image)){
+        if(file_exists('uploads/movie/'.$movie->image)){
             unlink('uploads/movie/'.$movie->image);
         }
         $movie->delete();

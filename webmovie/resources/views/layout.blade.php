@@ -10,7 +10,7 @@
       <meta name="language" content="Việt Nam">
       
 
-      <link rel="shortcut icon" href="https://www.pngkey.com/png/detail/360-3601772_your-logo-here-your-company-logo-here-png.png" type="image/x-icon" />
+      <link rel="shortcut icon" href="{{asset('img/logo1-removebg-preview.png')}}" type="image/x-icon" />
       <meta name="revisit-after" content="1 days" />
       <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
       <title>Phim hay 2021 - Xem phim hay nhất</title>
@@ -38,7 +38,7 @@
          width: 100%;
          }
       </style>
-      <style>#header .site-title {background: url(https://www.pngkey.com/png/detail/360-3601772_your-logo-here-your-company-logo-here-png.png) no-repeat top left;background-size: contain;text-indent: -9999px;}</style>
+      <style>#header .site-title {background: url({{asset('img/logo3-removebg-preview.png')}}) no-repeat top left;background-size: contain;text-indent: -9999px;}</style>
    </head>
    <body class="home blog halimthemes halimmovies" data-masonry="">
       <header id="header">
@@ -120,9 +120,9 @@
                         <li class="mega dropdown">
                            <a title="Năm" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">Năm <span class="caret"></span></a>
                            <ul role="menu" class=" dropdown-menu">
-                              <li><a title="Phim 2020" href="danhmuc.php">Phim 2020</a></li>
-                              <li><a title="Năm 2019" href="danhmuc.php">Năm 2019</a></li>
-                              <li><a title="Năm 2018" href="danhmuc.php">Năm 2018</a></li>
+                           @for($year=2000; $year<=2023; $year++)
+                              <li><a title="{{$year}}" href="{{url('nam/'.$year)}}">{{$year}}</a></li>
+                           @endfor
                            </ul>
                         </li>
                         

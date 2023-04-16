@@ -24,9 +24,15 @@ Route::get('/', [IndexController::class, 'home']) ->name('homepage');
 Route::get('/danh-muc/{slug}', [IndexController::class, 'category']) ->name('category');
 Route::get('/the-loai/{slug}', [IndexController::class, 'genre']) ->name('genre');
 Route::get('/quoc-gia/{slug}', [IndexController::class, 'country']) ->name('country');
-Route::get('/phim', [IndexController::class, 'movie']) ->name('movie');
+Route::get('/phim/{slug}', [IndexController::class, 'movie']) ->name('movie');
 Route::get('/xem-phim', [IndexController::class, 'watch']) ->name('watch');
 Route::get('/tap', [IndexController::class, 'episode']) ->name('episode');
+Route::get('/nam/{year}', [IndexController::class, 'year']);
+Route::get('/tag/{tag}', [IndexController::class, 'tags']);
+
+Route::get('/update-year-phim', [MovieController::class, 'update_year']);
+Route::get('/update-topview-phim', [MovieController::class, 'update_topview']);
+
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
