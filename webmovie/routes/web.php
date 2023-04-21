@@ -25,13 +25,17 @@ Route::get('/danh-muc/{slug}', [IndexController::class, 'category']) ->name('cat
 Route::get('/the-loai/{slug}', [IndexController::class, 'genre']) ->name('genre');
 Route::get('/quoc-gia/{slug}', [IndexController::class, 'country']) ->name('country');
 Route::get('/phim/{slug}', [IndexController::class, 'movie']) ->name('movie');
-Route::get('/xem-phim', [IndexController::class, 'watch']) ->name('watch');
-Route::get('/tap', [IndexController::class, 'episode']) ->name('episode');
+Route::get('/xem-phim/{slug}/{tap}', [IndexController::class, 'watch']);
+Route::get('/tap', [IndexController::class, 'episode']) ->name('tap');
 Route::get('/nam/{year}', [IndexController::class, 'year']);
 Route::get('/tag/{tag}', [IndexController::class, 'tags']);
 
+Route::get('/tim-kiem', [IndexController::class, 'timkiem'])->name('timkiem');
 Route::get('/update-year-phim', [MovieController::class, 'update_year']);
 Route::get('/update-topview-phim', [MovieController::class, 'update_topview']);
+Route::get('/update-season-phim', [MovieController::class, 'update_season']);
+
+Route::get('/filter-topview-phim', [MovieController::class, 'filter_topview']);
 
 Auth::routes();
 
@@ -42,3 +46,4 @@ Route::resource('/genre', GenreController::class);
 Route::resource('/movie', MovieController::class);
 Route::resource('/country', CountryController::class);
 Route::resource('/episode', EpisodeController::class);
+Route::get('/select-movie', [EpisodeController::class, 'select_movie'])->name('select-movie');

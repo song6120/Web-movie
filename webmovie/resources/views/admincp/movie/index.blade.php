@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="card">
             <a href="{{route('movie.create')}}" class="btn btn-primary">Thêm phim</a>
-        </div>
+            </div>
         <table class="table table-bordered" id="tablephim">
             <thead>
                 <tr>
@@ -22,9 +22,11 @@
                     <th scope="col">Phụ đề</th>
                     <th scope="col">Danh mục</th>
                     <th scope="col">Thể loại</th>
+                    <th scope="col">Số tập</th>
                     <th scope="col">Quốc gia</th>
                     <th scope="col">Hot</th>
                     <th scope="col">Trạng thái</th>
+                    <th scope="col">Season</th>
                     <th scope="col">Năm phim</th>
                     <th scope="col">Top views</th>
                     <th scope="col">Quản lý</th>
@@ -38,9 +40,16 @@
                     <td>{{$cate->name_english}}</td>
                     <td>{{$cate->time}}</td>
                     <td>{{$cate->slug}}</td>
-                    <td><img width="40%" src="{{asset('uploads/movie/'.$cate->image)}}"/></td>
+                    <td><img width="100%" src="{{asset('uploads/movie/'.$cate->image)}}"/></td>
                     <td>{{$cate->descripsion}}</td>
-                    <td>{{$cate->tags}}</td>
+                    <td>
+                    @if($cate->tags!=NULL)
+                        {{substr($cate->tags,0,50)}}...
+                    @else
+                        Không có từ khóa
+                    @endif
+
+                    </td>
                     <td>
                         @if ($cate->resolution == 0)
                             HD
@@ -52,6 +61,8 @@
                             Cam
                         @elseif($cate->resolution == 4)
                             FULL HD
+                        @elseif($cate->resolution == 5)
+                            Trailer
                         @endif
                     </td>
                     <td>
@@ -63,7 +74,13 @@
                     </td>
                     <td>{{$cate->category->title}}</td>
                     <td>{{$cate->country->title}}</td>
-                    <td>{{$cate->genre->title}}</td>
+                    <td>{{$cate->sotap}}</td>
+                    
+                    <td>
+                    @foreach($cate->movie_genre as $gen)
+                    <span class="badge badge-secondary">{{$gen ->title}}</span>
+                    @endforeach
+                    </td>
                     <td>
                         @if ($cate->movie_hot)
                             Có
@@ -77,6 +94,12 @@
                         @else
                             Không hiển thị
                         @endif
+                    </td>
+                    <td>
+                        <form method="POST">
+                        @csrf
+                        {!! Form::selectRange('season', 0, 20,  isset($cate->season) ? $cate->season : '', ['class'=>'select-season', 'id'=>$cate->id]) !!}
+                        </form>
                     </td>
                     <td>
                     {!! Form::selectYear('year', 2000, 2023, isset($cate->year) ? $cate->year : '', ['class'=>'select-year', 'id'=>$cate->id]) !!}

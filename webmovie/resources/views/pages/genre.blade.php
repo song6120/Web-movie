@@ -1,18 +1,6 @@
 @extends('layout')
 @section('content')
 <div class="row container" id="wrapper">
-            <div class="halim-panel-filter">
-               <div class="panel-heading">
-                  <div class="row">
-                     <div class="col-xs-6">
-                        <div class="yoast_breadcrumb hidden-xs"><span><span><a href="">{{$genre_slug->title}}</a> » <span class="breadcrumb_last" aria-current="page">2020</span></span></span></div>
-                     </div>
-                  </div>
-               </div>
-               <div id="ajax-filter" class="panel-collapse collapse" aria-expanded="true" role="menu">
-                  <div class="ajax"></div>
-               </div>
-            </div>
             <main id="main-contents" class="col-xs-12 col-sm-12 col-md-8">
                <section>
                   <div class="section-bar clearfix">
@@ -26,22 +14,34 @@
                                  <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$movie_cate->image)}}" alt="{{$movie_cate->slug}}" title="{{$movie_cate->title}}"></figure>
                                  <span class="status">
                                     @if ($movie_cate->resolution == 0)
-                                       HD
-                                    @elseif($movie_cate->resolution == 1)
+                                    HD
+                                 @elseif($movie_cate->resolution == 1)
                                        SD
-                                    @elseif($movie_cate->resolution == 2)
+                                 @elseif($movie_cate->resolution == 2)
                                        HDCam
-                                    @elseif($movie_cate->resolution == 3)
+                                 @elseif($movie_cate->resolution == 3)
                                        Cam
-                                    @elseif($movie_cate->resolution == 4)
+                                 @elseif($movie_cate->resolution == 4)
                                        FULL HD
-                                    @endif
+                                 @elseif($movie_cate->resolution == 5)
+                                       Trailer
+                                 @endif
                                  </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
                                     @if ($movie_cate->subtitle == 0)
+                                    @if($movie_cate->resolution != 5)
                                        Phụ đề
-                                    @elseif($movie_cate->subtitle == 1)
+                                    @endif
+                                    @if($movie_cate->season != 0)
+                                       - Season {{$movie_cate->season}}
+                                    @endif
+                                 @elseif($movie_cate->subtitle == 1)
+                                    @if($movie_cate->resolution != 5)
                                        Thuyết minh
                                     @endif
+                                    @if($movie_cate->season != 0)
+                                       - Season {{$movie_cate->season}}
+                                    @endif
+                                 @endif
                                  </span> 
                                  <div class="icon_overlay"></div>
                                  <div class="halim-post-title-box">

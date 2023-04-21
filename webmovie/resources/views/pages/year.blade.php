@@ -43,12 +43,24 @@
                                        Cam
                                  @elseif($movie_cate->resolution == 4)
                                        FULL HD
+                                 @elseif($movie_cate->resolution == 5)
+                                       Trailer
                                  @endif
                               </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
                                  @if ($movie_cate->subtitle == 0)
-                                    Phụ đề
+                                    @if($movie_cate->resolution != 5)
+                                       Phụ đề
+                                    @endif
+                                    @if($movie_cate->season != 0)
+                                       - Season {{$movie_cate->season}}
+                                    @endif
                                  @elseif($movie_cate->subtitle == 1)
-                                    Thuyết minh
+                                    @if($movie_cate->resolution != 5)
+                                       Thuyết minh
+                                    @endif
+                                    @if($movie_cate->season != 0)
+                                       - Season {{$movie_cate->season}}
+                                    @endif
                                  @endif
                               </span> 
                               <div class="icon_overlay"></div>

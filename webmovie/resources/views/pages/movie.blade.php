@@ -22,10 +22,14 @@
                            <div class="movie-poster col-md-3">
                               <img class="movie-thumb" src="{{asset('uploads/movie/'.$movie->image)}}" alt="{{$movie->title}}">
                               <div class="bwa-content">
+                              @if($episode_count>0)
+                                 @if($movie->resolution != 5)
                                  <div class="loader"></div>
-                                 <a href="{{route('watch')}}" class="bwac-btn">
-                                 <i class="fa fa-play"></i>
-                                 </a>
+                                    <a href="{{url('xem-phim/'.$movie->slug.'/tap-'.$episode_first->episode)}}" class="bwac-btn">
+                                    <i class="fa fa-play"></i>
+                                    </a>
+                                 @endif
+                              @endif
                               </div>
                            </div>
                            <div class="film-poster col-md-9">
@@ -44,19 +48,62 @@
                                        Cam
                                     @elseif($movie->resolution == 4)
                                        FULL HD
+                                    @elseif($movie->resolution == 5)
+                                       Trailer
                                     @endif
                                  </span>
+                                    @if($movie->resolution != 5)
                                  <span class="episode">
                                     @if ($movie->subtitle == 0)
                                        Phụ đề
-                                    @elseif($movie->subtitle == 1)
+                                    @endif
+                                 @elseif($movie->subtitle == 1)
+                                    @if($movie->resolution != 5)
                                        Thuyết minh
                                     @endif
                                  </span></li>
+                                 @endif
+                                  @if($movie->season != 0)
+                                    <li class="list-info-group-item"><span>Season
+                                       : {{$movie->season}}
+                                       </span>
+                                    @endif 
+                                  </li>
+                                 @if($movie->thuocphim == 0)
+                                    <li class="list-info-group-item"><span>Tập phim: </span> 
+                                    {{$episode_count}} /{{$movie->sotap}} tập </li>
+                                 @endif
                                  <li class="list-info-group-item"><span>Thời lượng</span> : {{$movie->time}}</li>
                                  <li class="list-info-group-item"><span>Danh mục</span> : <a href="{{route('category',$movie->category->slug)}}" rel="category tag">{{$movie->category->title}}</a></li>
-                                 <li class="list-info-group-item"><span>Thể loại</span> : <a href="{{route('genre',$movie->genre->slug)}}" rel="tag">{{$movie->genre->title}}</a></li>
+                                 <li class="list-info-group-item"><span>Thể loại</span> : 
+                                 
+                                 @foreach ($movie->movie_genre as $key)
+                                 <a href="{{route('genre',$key->slug)}}" rel="tag">
+                                 {{$key->title}}
+                                 
+                                 </a>
+                                    
+                                 @endforeach
+                                 
+                                 </li>
                                  <li class="list-info-group-item"><span>Quốc gia</span> : <a href="{{route('country',$movie->country->slug)}}" rel="tag">{{$movie->country->title}}</a></li>
+                                 
+                                 <li class="list-info-group-item"><span>Tập mới nhất</span> : 
+                                 @if($episode_count>0)
+                                    @if($movie->thuocphim == 0)
+                                       @foreach ($episode as $key=>$ep)
+                                          <a href="{{url('xem-phim/'.$movie->slug.'/tap-'.$ep->episode)}}" rel="tag"><button>{{$ep->episode}}</button></a>
+                                       @endforeach
+                                    @else($movie->thuocphim == 1)
+                                       @foreach ($episode as $key=>$ep)
+                                          <a href="{{url('xem-phim/'.$movie->slug.'/tap-'.$ep->episode)}}" rel="tag"><button>{{$ep->episode}}</button></a>
+                                       @endforeach
+                                    @endif
+                                 @else
+                                    Đang cập nhật  
+                                 @endif
+                                 </li>
+                                 
                               </ul>
                               <div class="movie-trailer hidden"></div>
                            </div>
@@ -72,6 +119,17 @@
                         <div class="video-item halim-entry-box">
                            <article id="post-38424" class="item-content">
                               {{$movie->descripsion}}
+                           </article>
+                        </div>
+                     
+                     </div>
+                     <div class="section-bar clearfix">
+                        <h2 class="section-title"><span style="color:#ffed4d">Trailer</span></h2>
+                     </div>
+                     <div class="entry-content htmlwrap clearfix">
+                        <div class="video-item halim-entry-box">
+                           <article id="watch_trailer" class="item-content">
+                              <iframe width="100%" height="450" src="https://www.youtube.com/embed/{{$movie->trailer}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                            </article>
                         </div>
                      
@@ -100,6 +158,19 @@
                            </article>
                         </div>
                      </div>
+                     <div class="section-bar clearfix">
+                        <h2 class="section-title"><span style="color:#ffed4d">Bình luận</span></h2>
+                     </div>
+                     <div class="entry-content htmlwrap clearfix">
+                     @php
+                     $url_current = Request::url();
+                     @endphp
+                        <div class="video-item halim-entry-box">
+                           <article id="post-38424" class="item-content">
+                           <div class="fb-comments col" data-href="{{$url_current}}" data-width="100%" data-numposts="10"></div>
+                           </article>
+                        </div>
+                     </div>
                   </div>
                </section>
                <section class="related-movies">
@@ -125,13 +196,25 @@
                                        Cam
                                     @elseif($relate->resolution == 4)
                                        FULL HD
+                                    @elseif($relate->resolution == 5)
+                                       Trailer
                                     @endif
                                  </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
                                     @if ($relate->subtitle == 0)
+                                    @if($relate->resolution != 5)
                                        Phụ đề
-                                    @elseif($relate->subtitle == 1)
+                                    @endif
+                                    @if($relate->season != 0)
+                                       - Season {{$relate->season}}
+                                    @endif
+                                 @elseif($relate->subtitle == 1)
+                                    @if($relate->resolution != 5)
                                        Thuyết minh
                                     @endif
+                                    @if($relate->season != 0)
+                                       - Season {{$relate->season}}
+                                    @endif
+                                 @endif
                                  </span> 
                                  <div class="icon_overlay"></div>
                                  <div class="halim-post-title-box">

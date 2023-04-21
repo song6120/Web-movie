@@ -35,8 +35,16 @@
                         {!! Form::text('name_english', isset($movie) ? $movie->name_english : '', ['class' => 'form-control', 'placeholder' => 'Nhập dữ liệu...', 'id'=>'name_english']) !!}
                         </div>
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
+                        {!! Form::label('sotap', 'Số tập') !!}
+                        {!! Form::text('sotap', isset($movie) ? $movie->sotap : '', ['class' => 'form-control', 'placeholder' => 'Nhập dữ liệu...', 'id'=>'name_english']) !!}
+                        </div>
+                        <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
                         {!! Form::label('slug', 'Slug') !!}
                         {!! Form::text('slug', isset($movie) ? $movie->slug : '', ['class' => 'form-control', 'placeholder' => 'Nhập dữ liệu...', 'id'=>'convert_slug']) !!}
+                        </div>
+                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
+                        {!! Form::label('trailer', 'Trailer') !!}
+                        {!! Form::text('trailer', isset($movie) ? $movie->trailer : '', ['class' => 'form-control', 'placeholder' => 'Nhập dữ liệu...', 'id'=>'convert_slug']) !!}
                         </div>
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
                         {!! Form::label('descripsion', 'Description') !!}
@@ -52,11 +60,15 @@
                         </div>
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
                         {!! Form::label('resolution', 'Resolution') !!}
-                        {!! Form::select('resolution', ['0'=>'HD', '1' => 'SD', '2'=>'HDCam', '3'=>'Cam', '4'=>'FULL HD'], isset($movie) ? $movie->resolution : '',['class' => 'form-control']) !!}
+                        {!! Form::select('resolution', ['0'=>'HD', '1' => 'SD', '2'=>'HDCam', '3'=>'Cam', '4'=>'FULL HD', '5'=>'Trailer'], isset($movie) ? $movie->resolution : '',['class' => 'form-control']) !!}
                         </div>
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
                         {!! Form::label('subtitle', 'Subtitle') !!}
                         {!! Form::select('subtitle', ['0'=>'Phụ đề', '1' => 'Thuyết minh'], isset($movie) ? $movie->subtitle : '',['class' => 'form-control']) !!}
+                        </div>
+                        <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
+                        {!! Form::label('thuocphim', 'Thuộc thể loại phim') !!}
+                        {!! Form::select('thuocphim', ['0'=>'Phim bộ', '1' => 'Phim lẻ'], isset($movie) ? $movie->thuocphim : '',['class' => 'form-control']) !!}
                         </div>
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
                         {!! Form::label('category', 'Category') !!}
@@ -67,8 +79,17 @@
                         {!! Form::select('country_id', $country, isset($movie) ? $movie->country_id : '',['class' => 'form-control']) !!}
                         </div>
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
-                        {!! Form::label('genre', 'Genre') !!}
-                        {!! Form::select('genre_id', $genre, isset($movie) ? $movie->genre_id : '',['class' => 'form-control']) !!}
+                        {!! Form::label('genre', 'Thể loại ', []) !!} <br/>
+                        {{--  {!! Form::select('genre_id', $genre, isset($movie) ? $movie->genre_id : '',['class' => 'form-control']) !!}  --}}
+                        
+                            @foreach ($list_genre as $key => $gen)
+                            @if(isset($movie))
+                                {!! Form::checkbox('genre[]', $gen->id, isset($movie_genre) && $movie_genre->contains($gen->id) ? true : false) !!}
+                            @else
+                                {!! Form::checkbox('genre[]', $gen->id,'') !!}
+                            @endif
+                                {!! Form::label('genre', $gen->title) !!}
+                            @endforeach
                         </div>
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
                         {!! Form::label('hot', 'Hot') !!}
@@ -82,18 +103,14 @@
                         {!! Form::label('image', 'Image') !!}
                         {!! Form::file('image', ['class' => 'form-control-file']) !!}
                         </div>
-                        
-
                         @if(isset($movie))
                             <img width="20%" src="{{asset('uploads/movie/'.$movie->image)}}"/>
                         @endif
                         </div>
                         @if (!isset($movie))
-                        {!! Form::submit('Thêm dữ liệu', ['class' => 'btn btn-success pull-right']) !!}
-                            
+                            {!! Form::submit('Thêm dữ liệu', ['class' => 'btn btn-success pull-right']) !!}
                         @else
-                        {!! Form::submit('Cập nhật', ['class' => 'btn btn-info pull-right']) !!}
-                            
+                            {!! Form::submit('Cập nhật', ['class' => 'btn btn-info pull-right']) !!}
                         @endif
                     {!! Form::close() !!}
                 </div>

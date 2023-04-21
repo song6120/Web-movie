@@ -14,7 +14,7 @@
       <meta name="revisit-after" content="1 days" />
       <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
       <title>Phim hay 2021 - Xem phim hay nhất</title>
-      <meta name="description" content="Phim hay 2021 - Xem phim hay nhất, xem phim online miễn phí, phim hot , phim nhanh" />
+      <meta name="description" content="Phim hay 2023" />
       <link rel="canonical" href="">
       <link rel="next" href="" />
       <meta property="og:locale" content="vi_VN" />
@@ -38,6 +38,37 @@
          width: 100%;
          }
       </style>
+      <script type="text/javascript">
+         $('.filter-sidebar').click(function(){
+            var href = $(this).attr('href');
+            if (href == '#ngay'){
+               var value = 0;
+            }elseif (href=='#tuan'){
+               var value = 1;
+            }else{
+               var value = 2;
+            }
+            $.ajax({
+               url: "{{ url('/filter-topview-phim') }}",
+                method: "GET",
+                data: {
+                    value:value,
+                },
+                success:function(data) {
+                    $('#show'+value).html(data);
+                }
+            });
+         })
+     </script>
+
+     <script type="text/javascript">
+         $(".click_trailer").click(function(e){
+            e.preventDefault();
+            var aid = $(this).attr("href");
+            $('html,body').animate({scrollTop: $(aid).offset().top}, 'slow');
+         });
+     </script>
+
       <style>#header .site-title {background: url({{asset('img/logo3-removebg-preview.png')}}) no-repeat top left;background-size: contain;text-indent: -9999px;}</style>
    </head>
    <body class="home blog halimthemes halimmovies" data-masonry="">
@@ -45,20 +76,32 @@
          <div class="container">
             <div class="row" id="headwrap">
                <div class="col-md-3 col-sm-6 slogan">
-                  <p class="site-title"><a class="logo" href="" title="phim hay ">Phim Hay</p>
+                  <p class="site-title"><a class="logo" href="{{route('homepage')}}" title="phim hay ">Phim Hay</p>
                   </a>
                </div>
                <div class="col-md-5 col-sm-6 halim-search-form hidden-xs">
                   <div class="header-nav">
                      <div class="col-xs-12">
-                        <form id="search-form-pc" name="halimForm" role="search" action="" method="GET">
+                     <style type="text/css">
+                        ul#result {
+                           position: absolute;
+                           z-index:9999;
+                           background: #1b2d3c;
+                           width: 94%;
+                           padding: 10px;
+                           margin:1px;
+                        }
+                     </style>
                            <div class="form-group">
                               <div class="input-group col-xs-12">
-                                 <input id="search" type="text" name="s" class="form-control" placeholder="Tìm kiếm..." autocomplete="off" required>
-                                 <i class="animate-spin hl-spin4 hidden"></i>
+                              <form action="{{route('timkiem')}}" method="GET">
+                                 <input id="timkiem" type="text" name="search" class="form-control" placeholder="Tìm kiếm phim..." autocomplete="off">
+                                 <button class="btn btn-primary">Tìm kiếm</button>
+                              </form>
                               </div>
+                              <ul class="list-group" id="result" style="display:none">
+                              </ul>
                            </div>
-                        </form>
                         <ul class="ui-autocomplete ajax-results hidden"></ul>
                      </div>
                   </div>
@@ -168,10 +211,35 @@
       <script type='text/javascript' src='{{asset('js/owl.carousel.min.js?ver=5.7.2')}}' id='carousel-js'></script>
      
       <script type='text/javascript' src='{{asset('js/halimtheme-core.min.js?ver=1626273138')}}' id='halim-init-js'></script>
+      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0" nonce="MkA9Wgzs"></script>
+      <script type="text/javascript">
+         $(document).ready(function(){
+            $('#timkiem').keyup(function(){
+               $('#result').html('');
+               var search = $('#timkiem').val();
+               if(search != ''){
+                  $('#result').css('display', 'inherit');
+                  var exp = new RegExp(search, "i");
+                  $.getJSON('/json/movies.json', function(data){
+                     $.each(data, function(key, value){
+                        if(value.title.search(exp) != -1 || value.descripsion.search(exp) != -1){
+                           $('#result').append('<li class="list-group" ><img src="uploads/movie/'+value.image+'" width="100"/> &ensp; '+ value.title +'</li>');
+                        }
+                     });
+                  });
+               }else{
+                  $('#result').css('display', 'none');
+               }
+            })
+            $('#result').on('click', 'li', function(){
+               var click_text = $(this).text();
+               $('#timkiem').val($.trim(click_text));
+               $('#result').html('');
+               $('#result').css('display', 'none');
+            });
+         })
+      </script>
       
-     
-     
-   
       <style>#overlay_mb{position:fixed;display:none;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0, 0, 0, 0.7);z-index:99999;cursor:pointer}#overlay_mb .overlay_mb_content{position:relative;height:100%}.overlay_mb_block{display:inline-block;position:relative}#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:600px;height:auto;position:relative;left:50%;top:50%;transform:translate(-50%, -50%);text-align:center}#overlay_mb .overlay_mb_content .cls_ov{color:#fff;text-align:center;cursor:pointer;position:absolute;top:5px;right:5px;z-index:999999;font-size:14px;padding:4px 10px;border:1px solid #aeaeae;background-color:rgba(0, 0, 0, 0.7)}#overlay_mb img{position:relative;z-index:999}@media only screen and (max-width: 768px){#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:400px;top:3%;transform:translate(-50%, 3%)}}@media only screen and (max-width: 400px){#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:310px;top:3%;transform:translate(-50%, 3%)}}</style>
     
       <style>
@@ -246,5 +314,6 @@
          span.bannermobi2 img {height: 70px;width: 300px;}
          #hide_float_right a { background: #01AEF0; padding: 5px 5px 1px 5px; color: #FFF;float: left;}
       </style>
+
    </body>
 </html>

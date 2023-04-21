@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Movie;
+use App\Models\Episode;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +16,9 @@ class EpisodeController extends Controller
      */
     public function index()
     {
-        //
+        $list_episode = Episode::with('movie')->orderBy('movie_id', 'DESC')->get();
+        //return response()->json($list_episode);
+        return view('admincp.episode.index', compact('list_episode'));
     }
 
     /**
@@ -23,7 +28,8 @@ class EpisodeController extends Controller
      */
     public function create()
     {
-        //
+        $list_movie = Movie::orderBy('id', 'DESC')->pluck('title', 'id');
+        return view('admincp.episode.form', compact('list_movie'));
     }
 
     /**
@@ -34,7 +40,15 @@ class EpisodeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $episode = new Episode();
+        $episode->movie_id = $data['movie_id'];
+        $episode->linkmovie = $data['link'];
+        $episode->episode = $data['episode'];
+        $episode->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $episode->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $episode->save();
+        return redirect()->route('episode.index');
     }
 
     /**
@@ -56,7 +70,10 @@ class EpisodeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $episode = Episode::find($id);
+        $list_movie = Movie::orderBy('id', 'DESC')->pluck('title', 'id');
+        //return response()->json($list_episode);
+        return view('admincp.episode.form', compact('episode', 'list_movie'));
     }
 
     /**
@@ -68,7 +85,14 @@ class EpisodeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $episode = Episode::find($id);
+        $episode->movie_id = $data['movie_id'];
+        $episode->linkmovie = $data['link'];
+        $episode->episode = $data['episode'];
+        $episode->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $episode->save();
+        return redirect()->route('episode.index');
     }
 
     /**
@@ -79,6 +103,24 @@ class EpisodeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $episode = Episode::find($id)->delete();
+        return redirect()->route('episode.index');
+    }
+    public function select_movie(){
+        $id = $_GET['id'];
+        $movie = Movie::find($id);
+        $out = '<option>----Chọn tập phim----</option>';
+        
+        if($movie->thuocphim == 0){
+            for($i=1;$i<=$movie->sotap;$i++){
+                $out .= '<option value="'.$i.'">'.$i.'</option>';
+            }
+        }else{
+            $out .= '<option value="HD">HD</option>';
+            $out .= '<option value="SD">SD</option>';
+            $out .= '<option value="HDCam">HDCam</option>';
+            $out .= '<option value="FULL HD">FULL HD</option>';
+        }          
+        echo $out;
     }
 }

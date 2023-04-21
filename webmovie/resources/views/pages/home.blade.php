@@ -27,7 +27,10 @@
                             Cam
                         @elseif($hot->resolution == 4)
                             FULL HD
+                        @elseif($hot->resolution == 5)
+                              Trailer
                         @endif
+                        | Tập {{$hot->sotap}}
                     </span><span class="episode">
                     <i class="fa fa-play" aria-hidden="true"></i>
                         @if ($hot->subtitle == 0)
@@ -61,7 +64,7 @@
         
         <section id="halim-advanced-widget-2">
             <div class="section-heading">
-                <a href="danhmuc.php" title="Phim Bộ">
+                <a href="{{route('category', $cate_home->slug)}}" title="Phim Bộ">
                     <span class="h-text">{{$cate_home->title}}</span>
                 </a>
             </div>
@@ -82,7 +85,10 @@
                                     Cam
                                 @elseif($cate_movie->resolution == 4)
                                     FULL HD
+                                @elseif($cate_movie->resolution == 5)
+                                    Trailer
                                 @endif
+                                | Tập {{$hot->sotap}}
                             </span>
                             <span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
                                 @if ($cate_movie->subtitle == 0)

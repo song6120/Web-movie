@@ -135,6 +135,43 @@
             });
         })
     </script>
+    <script type="text/javascript" >
+        $('.select-season').change(function(){
+            var season = $(this).find(':selected').val();
+            var id_phim = $(this).attr('id');
+            //alert(year);
+           // alert(id_phim);
+           
+            $.ajax({
+                url: "{{ url('/update-season-phim') }}",
+                method: "GET",
+                data: {
+                    season: season,
+                    id_phim: id_phim
+                },
+                success: function() {
+                    alert('Thay đổi thành công');
+                }
+            });
+        })
+    </script>
+    <script type="text/javascript" >
+        $('.select-movie').change(function(){
+            var id = $(this).find(':selected').val();
+            //alert(year);
+           
+            $.ajax({
+                url: "{{ route('select-movie') }}",
+                method: "GET",
+                data: {
+                    id: id
+                },
+                success: function(data) {
+                    $('#show_movie').html(data)
+                }
+            });
+        })
+    </script>
     
     <script type="text/javascript">
         function ChangeToSlug(){
