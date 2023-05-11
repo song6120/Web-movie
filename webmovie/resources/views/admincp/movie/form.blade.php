@@ -1,13 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container"  style="margin: 0;padding: 0;width: 100%;">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
-            <a href="{{route('movie.index')}}" class="btn btn-primary">Liệt kê</a>
-                <div class="card-header">Quản lý phim</div>
-
+            <div class="card" style="padding: 10px 30px 20px 30px;">
+            <h2 style="text-align: center;">Quản lý phim</h2>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -107,11 +114,11 @@
                             <img width="20%" src="{{asset('uploads/movie/'.$movie->image)}}"/>
                         @endif
                         </div>
-                        @if (!isset($movie))
-                            {!! Form::submit('Thêm dữ liệu', ['class' => 'btn btn-success pull-right']) !!}
-                        @else
-                            {!! Form::submit('Cập nhật', ['class' => 'btn btn-info pull-right']) !!}
-                        @endif
+                            @if (!isset($movie))
+                                {!! Form::submit('Thêm dữ liệu', ['class' => 'btn btn-success pull-right pt-4']) !!}
+                            @else
+                                {!! Form::submit('Cập nhật', ['class' => 'btn btn-info pull-right pt-4']) !!}
+                            @endif
                     {!! Form::close() !!}
                 </div>
             </div>

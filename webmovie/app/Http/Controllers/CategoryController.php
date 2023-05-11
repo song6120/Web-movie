@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $list = Category::all();
+        return view('admincp.category.index', compact('list'));
     }
 
     /**
@@ -24,8 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $list = Category::all();
-        return view('admincp.category.form', compact('list'));
+        return view('admincp.category.form');
     }
 
     /**
@@ -36,13 +36,28 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate(
+            [
+                'title'=>'required|unique:categories|max:100',
+                'slug'=>'required|unique:categories|max:255',
+                'descripsion'=>'required|max:255',
+                'status'=>'required',
+            ],
+            [
+                'title.unique'=>'Tên danh mục này đã tồn tại, vui lòng nhập lại!',
+                'slug.unique'=>'Slug danh mục này đã tồn tại, vui lòng nhập lại!',
+                'descripsion.required'=>'Mô tả không được để trống',
+                'title.required'=>'Tên danh mục không được để trống',
+                'slug.required'=>'Slug không được để trống',
+            ]
+        );
         $category = new Category();
         $category->title = $data['title'];
         $category->slug = $data['slug'];
         $category->descripsion = $data['descripsion'];
         $category->status = $data['status'];
         $category->save();
+        toastr()->success('Thêm danh mục thành công','');
         return redirect()->back();
         
     }
@@ -80,14 +95,29 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validate(
+            [
+                'title'=>'required|unique:categories|max:100',
+                'slug'=>'required|unique:categories|max:255',
+                'descripsion'=>'required|max:255',
+                'status'=>'required',
+            ],
+            [
+                'title.unique'=>'Tên danh mục này đã tồn tại, vui lòng nhập lại!',
+                'slug.unique'=>'Slug danh mục này đã tồn tại, vui lòng nhập lại!',
+                'descripsion.required'=>'Mô tả không được để trống',
+                'title.required'=>'Tên danh mục không được để trống',
+                'slug.required'=>'Slug không được để trống',
+            ]
+        );
         $category = Category::find($id);
         $category->title = $data['title'];
         $category->slug = $data['slug'];
         $category->descripsion = $data['descripsion'];
         $category->status = $data['status'];
         $category->save();
-        return redirect()->back();
+        toastr()->success('Cập nhật danh mục thành công','');
+        return redirect()->route('category.index');
     }
 
     /**
@@ -99,6 +129,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::find($id)->delete();
-        return redirect()->back();
+        toastr()->info('Xóa danh mục thành công','');
+        return redirect()->route('category.index');
     }
 }

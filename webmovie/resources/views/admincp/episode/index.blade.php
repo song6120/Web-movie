@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -26,7 +25,7 @@
                         <td>{{$cate->movie->title}}</td>
                         <td><img width="100%" src="{{asset('uploads/movie/'.$cate->movie->image)}}"/></td>
                         <td>{{$cate->episode}}</td>
-                        <td>{!!$cate->linkmovie!!}</td>
+                        <td>{{$cate->linkmovie}}</td>
                         <td>
                             @if ($cate->status)
                                 Hiển thị

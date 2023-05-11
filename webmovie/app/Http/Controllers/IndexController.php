@@ -8,6 +8,7 @@ use App\Models\country;
 use App\Models\Episode;
 use App\Models\Genre;
 use App\Models\Movie;
+use App\Models\Rating;
 use App\Models\Movie_Genre;
 use DB;
 
@@ -106,7 +107,26 @@ class IndexController extends Controller
         $episode_first = Episode::with('movie')->where('movie_id', $movie->id)->orderBy('episode', 'ASC')->take(1)->first();
         $episode_list = Episode::with('movie')->where('movie_id', $movie->id)->get();
         $episode_count = $episode_list->count();
-        return view('pages.movie', compact('category', 'episode_first','genre', 'country', 'movie','related', 'movie_sidebar', 'movie_trailer', 'episode', 'episode_count'));
+        $rating = Rating::where('movie_id', $movie->id)->avg('rating');
+        $rating = round($rating);
+        $count_total = Rating::where('movie_id', $movie->id)->count();
+        return view('pages.movie', compact('category', 'episode_first','genre', 'country', 'movie','related', 'movie_sidebar', 'movie_trailer', 'episode', 'episode_count', 'count_total','rating'));
+    }
+    public function add_rating(Request $request){
+        $data = $request->all();
+        $id_address = $request->id();
+
+        $rating_count = Rating::where('movie_id', $data['movie_id'])->where('ip_address', $ip_address)->count();
+        if($rating_count>0){
+            echo 'exit'; 
+        }else{
+            $rating = new Rating();
+            $rating->movie_id = $data['movie_id'];
+            $rating->rating = $data['index'];
+            $rating->ip_address = $ip_address;
+            $rating->save();
+            echo 'done';
+        }
     }
     public function episode(){
         $category = Category::where('status', 1)->get();

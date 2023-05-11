@@ -29,6 +29,7 @@ Route::get('/xem-phim/{slug}/{tap}', [IndexController::class, 'watch']);
 Route::get('/tap', [IndexController::class, 'episode']) ->name('tap');
 Route::get('/nam/{year}', [IndexController::class, 'year']);
 Route::get('/tag/{tag}', [IndexController::class, 'tags']);
+Route::post('/add-rating', [IndexController::class, 'add_rating'])->name('add-rating');;
 
 Route::get('/tim-kiem', [IndexController::class, 'timkiem'])->name('timkiem');
 Route::get('/update-year-phim', [MovieController::class, 'update_year']);
@@ -47,3 +48,4 @@ Route::resource('/movie', MovieController::class);
 Route::resource('/country', CountryController::class);
 Route::resource('/episode', EpisodeController::class);
 Route::get('/select-movie', [EpisodeController::class, 'select_movie'])->name('select-movie');
+Route::get('/add-episode/{id}', [EpisodeController::class, 'add_episode'])->name('add-episode');

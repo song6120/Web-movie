@@ -31,7 +31,13 @@ class EpisodeController extends Controller
         $list_movie = Movie::orderBy('id', 'DESC')->pluck('title', 'id');
         return view('admincp.episode.form', compact('list_movie'));
     }
-
+    public function add_episode($id)
+    {
+        $movie = Movie::find($id);
+        $list_episode = Episode::with('movie')->where('movie_id', $id)->orderBy('episode', 'DESC')->get();
+        //return response()->json($list_episode);
+        return view('admincp.episode.add_episode', compact('list_episode', 'movie'));
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -48,7 +54,7 @@ class EpisodeController extends Controller
         $episode->created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $episode->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $episode->save();
-        return redirect()->route('episode.index');
+        return redirect()->back();
     }
 
     /**
@@ -104,7 +110,7 @@ class EpisodeController extends Controller
     public function destroy($id)
     {
         $episode = Episode::find($id)->delete();
-        return redirect()->route('episode.index');
+        return redirect()->back();
     }
     public function select_movie(){
         $id = $_GET['id'];

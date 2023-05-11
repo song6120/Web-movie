@@ -32,7 +32,7 @@
                                 </div>
                                 <p class="title">{{$movie_side->title}}</p>
                             </a>
-                            <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
+                            <div class="viewsCount" style="color: #9d9d9d;">{{$movie_side->genre->title}}</div>
                             <div style="float: left;">
                                 <span class="user-rate-image post-large-rate stars-large-vang" style="display: block;/* width: 100%; */">
                                     <span style="width: 0%"></span>

@@ -14,7 +14,8 @@ class GenreController extends Controller
      */
     public function index()
     {
-        //
+        $list = Genre::all();
+        return view('admincp.genre.index', compact('list'));
     }
 
     /**
@@ -36,7 +37,21 @@ class GenreController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate(
+            [
+                'title'=>'required|unique:genres|max:100',
+                'slug'=>'required|unique:genres|max:255',
+                'descripsion'=>'required|max:255',
+                'status'=>'required',
+            ],
+            [
+                'title.unique'=>'Tên thể loại này đã tồn tại, vui lòng nhập lại!',
+                'slug.unique'=>'Slug thể loại này đã tồn tại, vui lòng nhập lại!',
+                'descripsion.required'=>'Mô tả không được để trống',
+                'title.required'=>'Tên thể loại không được để trống',
+                'slug.required'=>'Slug thể loại không được để trống',
+            ]
+        );
         $genre = new Genre();
         $genre->title = $data['title'];
         $genre->slug = $data['slug'];
@@ -80,14 +95,28 @@ class GenreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validate(
+            [
+                'title'=>'required|unique:genres|max:100',
+                'slug'=>'required|unique:genres|max:255',
+                'descripsion'=>'required|max:255',
+                'status'=>'required',
+            ],
+            [
+                'title.unique'=>'Tên thể loại này đã tồn tại, vui lòng nhập lại!',
+                'slug.unique'=>'Slug thể loại này đã tồn tại, vui lòng nhập lại!',
+                'descripsion.required'=>'Mô tả không được để trống',
+                'title.required'=>'Tên thể loại không được để trống',
+                'slug.required'=>'Slug thể loại không được để trống',
+            ]
+        );
         $genre = Genre::find($id);
         $genre->title = $data['title'];
         $genre->slug = $data['slug'];
         $genre->descripsion = $data['descripsion'];
         $genre->status = $data['status'];
         $genre->save();
-        return redirect()->back();
+        return redirect()->route('genre.index');
     }
 
     /**
@@ -99,6 +128,6 @@ class GenreController extends Controller
     public function destroy($id)
     {
         Genre::find($id)->delete();
-        return redirect()->back();
+        return redirect()->route('genre.index');
     }
 }

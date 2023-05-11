@@ -30,7 +30,7 @@
                         @elseif($hot->resolution == 5)
                               Trailer
                         @endif
-                        | Tập {{$hot->sotap}}
+                        | {{$hot->sotap}} Tập
                     </span><span class="episode">
                     <i class="fa fa-play" aria-hidden="true"></i>
                         @if ($hot->subtitle == 0)
@@ -55,7 +55,7 @@
             <script>
                $(document).ready(function($) {				
                var owl = $('#halim_related_movies-2');
-               owl.owlCarousel({loop: true,margin: 4,autoplay: true,autoplayTimeout: 4000,autoplayHoverPause: true,nav: true,navText: ['<i class="hl-down-open rotate-left"></i>', '<i class="hl-down-open rotate-right"></i>'],responsiveClass: true,responsive: {0: {items:2},480: {items:3}, 600: {items:4},1000: {items: 5}}})});
+               owl.owlCarousel({loop: true,margin: 4,autoplay: true,autoplayTimeout: 4000,autoplayHoverPause: true,nav: true,navText: ['<i class="fa fa-arrow-left"></i>', '<i class="fa fa-arrow-right"></i>'],responsiveClass: true,responsive: {0: {items:2},480: {items:3}, 600: {items:4},1000: {items: 5}}})});
             </script>
         </div>
     <main id="main-contents" class="col-xs-12 col-sm-12 col-md-8">
@@ -88,7 +88,7 @@
                                 @elseif($cate_movie->resolution == 5)
                                     Trailer
                                 @endif
-                                | Tập {{$hot->sotap}}
+                                | {{$hot->sotap}} Tập
                             </span>
                             <span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
                                 @if ($cate_movie->subtitle == 0)

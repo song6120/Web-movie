@@ -103,7 +103,26 @@
                                     Đang cập nhật  
                                  @endif
                                  </li>
-                                 
+                                 <ul class="list-inline rating"  title="Average Rating">
+                                    @for($count=1; $count<=5; $count++)
+                                      @php
+                                        if($count<=$rating){ 
+                                          $color = 'color:#ffcc00;'; //mau vang
+                                        }
+                                        else {
+                                          $color = 'color:#ccc;'; //mau xam
+                                        }
+                                      @endphp
+                                      <li title="star_rating" 
+                                      id="{{$movie->id}}-{{$count}}" 
+                                      data-index="{{$count}}"  
+                                      data-movie_id="{{$movie->id}}" 
+                                      data-rating="{{$rating}}" 
+                                      class="rating" 
+                                      style="cursor:pointer; {{$color}} 
+                                      font-size:30px;">&#9733;</li>
+                                    @endfor
+                                 </ul>
                               </ul>
                               <div class="movie-trailer hidden"></div>
                            </div>
@@ -123,6 +142,7 @@
                         </div>
                      
                      </div>
+                     @if ($movie->trailer != NULL)
                      <div class="section-bar clearfix">
                         <h2 class="section-title"><span style="color:#ffed4d">Trailer</span></h2>
                      </div>
@@ -132,8 +152,9 @@
                               <iframe width="100%" height="450" src="https://www.youtube.com/embed/{{$movie->trailer}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                            </article>
                         </div>
-                     
                      </div>
+                     @endif
+                     
                      <div class="section-bar clearfix">
                         <h2 class="section-title"><span style="color:#ffed4d">Tags</span></h2>
                      </div>
@@ -167,7 +188,7 @@
                      @endphp
                         <div class="video-item halim-entry-box">
                            <article id="post-38424" class="item-content">
-                           <div class="fb-comments col" data-href="{{$url_current}}" data-width="100%" data-numposts="10"></div>
+                              <div style="background: white;" class="fb-comments col" data-href="{{$url_current}}" data-width="100%" data-numposts="10"></div>
                            </article>
                         </div>
                      </div>
@@ -231,7 +252,7 @@
                      <script>
                         $(document).ready(function($) {				
                         var owl = $('#halim_related_movies-2');
-                        owl.owlCarousel({loop: true,margin: 4,autoplay: true,autoplayTimeout: 4000,autoplayHoverPause: true,nav: true,navText: ['<i class="hl-down-open rotate-left"></i>', '<i class="hl-down-open rotate-right"></i>'],responsiveClass: true,responsive: {0: {items:2},480: {items:3}, 600: {items:4},1000: {items: 4}}})});
+                        owl.owlCarousel({loop: true,margin: 4,autoplay: true,autoplayTimeout: 4000,autoplayHoverPause: true,nav: true,navText: ['<i class="fa fa-arrow-left"></i>', '<i class="fa fa-arrow-right"></i>'],responsiveClass: true,responsive: {0: {items:2},480: {items:3}, 600: {items:4},1000: {items: 4}}})});
                      </script>
                   </div>
                </section>

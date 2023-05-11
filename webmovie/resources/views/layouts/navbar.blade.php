@@ -7,19 +7,19 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="{{route('genre.create')}}">Thể loại</a>
+        <a class="nav-link" href="{{route('genre.index')}}">Thể loại</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{route('category.create')}}">Danh mục</a>
+        <a class="nav-link" href="{{route('category.index')}}">Danh mục</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{route('country.create')}}">Quốc gia</a>
+        <a class="nav-link" href="{{route('country.index')}}">Quốc gia</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{route('movie.create')}}">Phim</a>
+        <a class="nav-link" href="{{route('movie.index')}}">Phim</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{route('episode.create')}}">Tập phim</a>
+        <a class="nav-link" href="{{route('episode.index')}}">Tập phim</a>
       </li>
       <!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -1,20 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" style="margin: 0;padding: 0;width: 100%;">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card">
+        <div class="card" style="padding: 10px 30px;">
             <a href="{{route('episode.index')}}" class="btn btn-primary">Danh sách</a>
-                <div class="card-header">Quản lý tập phim</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    
+                <div class="card-header"><h2 style="text-align: center;">Quản lý tập phim</h2></div>
+                    <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        
                     @if (!isset($episode))
                     {!! Form::open(['route' => 'episode.store', 'method' => 'POST', 'enctype'=>'multipart/form-data']) !!}
                         
@@ -25,8 +24,9 @@
                         
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
                         {!! Form::label('movie', 'Chọn phim') !!}
-                        {!! Form::select('movie_id', $list_movie, isset($episode) ? $episode->movieid : '',['class' => 'form-control select-movie']) !!}
+                        {!! Form::select('movie_id', $list_movie, isset($episode) ? $episode->movie_id : '',['class' => 'form-control select-movie']) !!}
                         </div>
+                        
                         <div class="form-group{{ $errors->has('inputname') ? ' has-error' : '' }}">
                         {!! Form::label('link', 'Link movie') !!}
                         {!! Form::text('link', isset($episode) ? $episode->linkmovie : '', ['class' => 'form-control', 'placeholder' => 'Nhập link...']) !!}

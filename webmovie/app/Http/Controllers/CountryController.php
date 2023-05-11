@@ -14,7 +14,8 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+        $list = Country::all();
+        return view('admincp.country.index', compact('list'));
     }
 
     /**
@@ -36,14 +37,28 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate(
+            [
+                'title'=>'required|unique:countries|max:100',
+                'slug'=>'required|unique:countries|max:255',
+                'descripsion'=>'required|max:255',
+                'status'=>'required',
+            ],
+            [
+                'title.unique'=>'Tên quốc gia này đã tồn tại, vui lòng nhập lại!',
+                'slug.unique'=>'Slug quốc gia này đã tồn tại, vui lòng nhập lại!',
+                'descripsion.required'=>'Mô tả không được để trống',
+                'title.required'=>'Tên quốc gia không được để trống',
+                'slug.required'=>'Slug quốc gia không được để trống',
+            ]
+        );
         $country = new Country();
         $country->title = $data['title'];
         $country->slug = $data['slug'];
         $country->descripsion = $data['descripsion'];
         $country->status = $data['status'];
         $country->save();
-        return redirect()->back();
+        return redirect()->route('country.index');
         
     }
 
@@ -80,14 +95,28 @@ class CountryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validate(
+            [
+                'title'=>'required|unique:countries|max:100',
+                'slug'=>'required|unique:countries|max:255',
+                'descripsion'=>'required|max:255',
+                'status'=>'required',
+            ],
+            [
+                'title.unique'=>'Tên quốc gia này đã tồn tại, vui lòng nhập lại!',
+                'slug.unique'=>'Slug quốc gia này đã tồn tại, vui lòng nhập lại!',
+                'descripsion.required'=>'Mô tả không được để trống',
+                'title.required'=>'Tên quốc gia không được để trống',
+                'slug.required'=>'Slug quốc gia không được để trống',
+            ]
+        );
         $country = Country::find($id);
         $country->title = $data['title'];
         $country->slug = $data['slug'];
         $country->descripsion = $data['descripsion'];
         $country->status = $data['status'];
         $country->save();
-        return redirect()->back();
+        return redirect()->route('country.index');
     }
 
     /**
@@ -99,6 +128,6 @@ class CountryController extends Controller
     public function destroy($id)
     {
         Country::find($id)->delete();
-        return redirect()->back();
+        return redirect()->route('country.index');
     }
 }

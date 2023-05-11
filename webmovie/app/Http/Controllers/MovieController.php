@@ -20,7 +20,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $list = Movie::with('category', 'country', 'movie_genre', 'genre')->orderBy('id', 'DESC')->get();
+        $list = Movie::with('category', 'country', 'movie_genre', 'genre')->withCount('episode')->orderBy('id', 'DESC')->get();
         $path = public_path()."/json/";
         if(!is_dir($path)) {mkdir($path, 0777, true);}
         File::put($path.'movies.json', json_encode($list));
@@ -101,7 +101,36 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate(
+            [
+                'title'=>'required|unique:movies|max:100',
+                'slug'=>'required|unique:movies|max:255',
+                'descripsion'=>'required',
+                'image'=>'required',
+                'trailer'=>'required',
+                'name_english'=>'required',
+                'tags'=>'required',
+                'sotap'=>'required',
+                'status'=>'required',
+                'thuocphim'=>'required',
+                'resolution'=>'required',
+                'subtitle'=>'required',
+                'movie_hot'=>'required',
+                'year'=>'required',
+                'category_id'=>'required',
+                'country_id'=>'required',
+                'time'=>'required',
+                'genre'=>'required',
+            ],
+            [
+                'title.unique'=>'Tên phim đã tồn tại, vui lòng nhập lại!',
+                'slug.unique'=>'Slug phim đã tồn tại, vui lòng nhập lại!',
+                'descripsion.required'=>'Mô tả không được để trống',
+                'title.required'=>'Tên phim không được để trống',
+                'slug.required'=>'Slug phim không được để trống',
+                'image.required'=>'Ảnh không đúng định dạng',
+            ]
+        );
         $movie = new Movie();
         $movie->title = $data['title'];
         $movie->trailer = $data['trailer'];
@@ -137,7 +166,7 @@ class MovieController extends Controller
         }
         $movie->save();
         $movie->movie_genre()->attach($data['genre']);
-        return redirect()->route('movie.index');
+        return redirect()->back();
         
     }
 

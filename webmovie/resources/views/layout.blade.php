@@ -8,20 +8,17 @@
       <meta content="VN" name="geo.region" />
       <meta name="DC.language" scheme="utf-8" content="vi" />
       <meta name="language" content="Việt Nam">
+      <meta name="csrf-token" content="{{ csrf_token() }}">
       
 
       <link rel="shortcut icon" href="{{asset('img/logo1-removebg-preview.png')}}" type="image/x-icon" />
       <meta name="revisit-after" content="1 days" />
       <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-      <title>Phim hay 2021 - Xem phim hay nhất</title>
+      <title>Phim hay 2023 - Xem phim hay nhất</title>
       <meta name="description" content="Phim hay 2023" />
       <link rel="canonical" href="">
       <link rel="next" href="" />
       <meta property="og:locale" content="vi_VN" />
-      <meta property="og:title" content="Phim hay 2020 - Xem phim hay nhất" />
-      <meta property="og:description" content="Phim hay 2020 - Xem phim hay nhất, phim hay trung quốc, hàn quốc, việt nam, mỹ, hong kong , chiếu rạp" />
-      <meta property="og:url" content="" />
-      <meta property="og:site_name" content="Phim hay 2021- Xem phim hay nhất" />
       <meta property="og:image" content="" />
       <meta property="og:image:width" content="300" />
       <meta property="og:image:height" content="55" />
@@ -91,12 +88,17 @@
                            padding: 10px;
                            margin:1px;
                         }
+                        .tim {
+                           display: flex;
+                        }
                      </style>
                            <div class="form-group">
                               <div class="input-group col-xs-12">
                               <form action="{{route('timkiem')}}" method="GET">
-                                 <input id="timkiem" type="text" name="search" class="form-control" placeholder="Tìm kiếm phim..." autocomplete="off">
-                                 <button class="btn btn-primary">Tìm kiếm</button>
+                                 <div class="tim">
+                                    <input id="timkiem" type="text" name="search" class="form-control" placeholder="Tìm kiếm phim..." autocomplete="off">
+                                    <button class="btn btn-primary">Tìm kiếm</button>
+                                 </div>
                               </form>
                               </div>
                               <ul class="list-group" id="result" style="display:none">
@@ -238,6 +240,72 @@
                $('#result').css('display', 'none');
             });
          })
+      </script>
+      <script type="text/javascript">
+        
+          function remove_background(movie_id)
+           {
+            for(var count = 1; count <= 5; count++)
+            {
+             $('#'+movie_id+'-'+count).css('color', '#ccc');
+            }
+          }
+
+          //hover chuột đánh giá sao
+         $(document).on('mouseenter', '.rating', function(){
+            var index = $(this).data("index");
+            var movie_id = $(this).data('movie_id');
+          // alert(index);
+          // alert(movie_id);
+            remove_background(movie_id);
+            for(var count = 1; count<=index; count++)
+            {
+             $('#'+movie_id+'-'+count).css('color', '#ffcc00');
+            }
+          });
+         //nhả chuột ko đánh giá
+         $(document).on('mouseleave', '.rating', function(){
+            var index = $(this).data("index");
+            var movie_id = $(this).data('movie_id');
+            var rating = $(this).data("rating");
+            remove_background(movie_id);
+            //alert(rating);
+            for(var count = 1; count<=rating; count++)
+            {
+             $('#'+movie_id+'-'+count).css('color', '#ffcc00');
+            }
+           });
+
+          //click đánh giá sao
+          $(document).on('click', '.rating', function(){
+            var index = $(this).data("index");
+            var movie_id = $(this).data('movie_id');
+            
+            $.ajax({
+             url:"{{route('add-rating')}}",
+             method:"POST",
+             data:{index:index, movie_id:movie_id},
+               headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+             success:function(data)
+             {
+              if(data == 'done')
+              {
+               
+               alert("Bạn đã đánh giá "+index +" trên 5");
+               location.reload();
+               
+              }else if(data =='exist'){
+                alert("Bạn đã đánh giá phim này rồi!");
+              }
+              else
+              {
+               alert("Lỗi đánh giá");
+              }
+             }
+            });
+          });
       </script>
       
       <style>#overlay_mb{position:fixed;display:none;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0, 0, 0, 0.7);z-index:99999;cursor:pointer}#overlay_mb .overlay_mb_content{position:relative;height:100%}.overlay_mb_block{display:inline-block;position:relative}#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:600px;height:auto;position:relative;left:50%;top:50%;transform:translate(-50%, -50%);text-align:center}#overlay_mb .overlay_mb_content .cls_ov{color:#fff;text-align:center;cursor:pointer;position:absolute;top:5px;right:5px;z-index:999999;font-size:14px;padding:4px 10px;border:1px solid #aeaeae;background-color:rgba(0, 0, 0, 0.7)}#overlay_mb img{position:relative;z-index:999}@media only screen and (max-width: 768px){#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:400px;top:3%;transform:translate(-50%, 3%)}}@media only screen and (max-width: 400px){#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:310px;top:3%;transform:translate(-50%, 3%)}}</style>
